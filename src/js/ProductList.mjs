@@ -18,15 +18,38 @@ export default class ProductList {
         this.category = category;
         this.dataSource = dataSource;
         this.listElement = listElement;
+        this.products = [];
     }
 
     // using the dataSource to get the list of products
     async init() {
-        const list = await this.dataSource.getData();
-        this.renderList(list);
+        const data = await this.dataSource.getData();
+        this.products = data || [];
+        this.renderList(this.products);
     }
 
     renderList(list) {
         renderListWithTemplate(productCardTemplate, this.listElement, list, "afterbegin", true);
+    }
+
+    sortList(criteria) { 
+        let sortedList = Array.isArray(this.products) ? [...this.products] : [];
+
+        if (sortedList.length === 0) { 
+            return;
+        }
+
+        let sortOptions = {
+            "name-asc": (a, b) => a.Name.localeCompare(b.Name),
+            "name-desc": (a, b) => b.Name.localeCompare(a.Name),
+            "price-asc": (a, b) => parseFloat(a.FinalPrice) - parseFloat(b.FinalPrice),
+            "price-desc": (a, b) => parseFloat(b.FinalPrice) - parseFloat(a.FinalPrice)
+        };
+
+        if (sortOptions[criteria]) { 
+            sortedList.sort(sortOptions[criteria]);
+        }
+
+        this.renderList(sortedList);
     }
 }
