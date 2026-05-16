@@ -8,3 +8,12 @@ const productList = new ProductList("tents", dataSource, listElement);
 
 productList.init();
 updateCartCount();
+
+const sortSelect = document.querySelector("#sort-select");
+
+if (sortSelect) { 
+    sortSelect.addEventListener("change", (event) => {
+        const criteria = event.target.value;
+        productList.sortList(criteria);
+    });
+}
