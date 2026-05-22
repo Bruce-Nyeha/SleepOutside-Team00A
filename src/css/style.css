@@ -221,6 +221,43 @@ button {
   width: 100%;
 }
 
+/* ============================== */
+/*       PRODUCT CATEGORIES       */
+/* ============================== */
+
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  text-align: center;
+  padding: 20px;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.category img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 8px;
+  transition: transform 0.2s ease;
+}
+
+.category span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.category:hover img {
+  transform: scale(1.1);
+}
+
 /* Start cart list card styles */
 .cart-card {
   display: grid;
