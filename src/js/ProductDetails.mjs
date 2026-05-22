@@ -11,14 +11,14 @@ export default class ProductDetails {
 
     // initialize page
     async init() {
+        // Use the data source to get the details for the current product
         this.product = await this.dataSource.findProductById(this.productId);
 
-        console.log(this.product);
-        console.log(this.product.Image);
-
+        // The product details are needed before rendering the HTML
         this.renderProductDetails();
 
-        // add listener to Add to Cart button
+        // Once the HTML is rendered, add a listener to the Add to Cart button
+        // Notice the .bind(this). This callback will not work if the bind(this) is missing
         document
             .getElementById("addToCart")
             .addEventListener("click", this.addProductToCart.bind(this));
@@ -39,7 +39,7 @@ export default class ProductDetails {
             this.product.Name;
 
         document.querySelector(".product-detail img").src =
-            this.product.Image;
+            this.product.Images.PrimaryLarge;
 
         document.querySelector(".product-detail img").alt =
             this.product.Name;
