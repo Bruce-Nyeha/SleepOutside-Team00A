@@ -259,6 +259,19 @@ button {
   grid-column: 3;
 }
 
+/* Start total $ in cart styles*/
+.cart-footer {
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--light-grey);
+  padding-top: 0.5rem;
+  text-align: right;
+  font-size: var(--small-font);
+}
+
+.cart-footer.hide {
+  display: none;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;

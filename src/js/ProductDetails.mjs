@@ -13,8 +13,8 @@ export default class ProductDetails {
     async init() {
         this.product = await this.dataSource.findProductById(this.productId);
 
-        console.log(this.product);
-        console.log(this.product.Image);
+        //console.log(this.product);
+        //console.log(this.product.Image);
 
         this.renderProductDetails();
 
@@ -39,7 +39,7 @@ export default class ProductDetails {
             this.product.Name;
 
         document.querySelector(".product-detail img").src =
-            this.product.Image;
+            this.product.Images.PrimaryLarge;
 
         document.querySelector(".product-detail img").alt =
             this.product.Name;
@@ -47,8 +47,10 @@ export default class ProductDetails {
         document.querySelector(".product-card__price").textContent =
             `$${this.product.FinalPrice}`;
 
-        document.querySelector(".product__color").textContent =
-            this.product.Colors[0].ColorName;
+        if (this.product.Colors && this.product.Colors.length > 0) {
+            document.querySelector(".product__color").textContent =
+                this.product.Colors[0].ColorName;
+        }
 
         document.querySelector(".product__description").textContent =
             this.product.Description;

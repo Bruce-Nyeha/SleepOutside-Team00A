@@ -60,10 +60,10 @@ export async function loadTemplate(path) {
 }
 
 export async function loadHeaderFooter() { 
-    const headerTemplate = await loadTemplate("../partials/header.html");   //W03: the await keyword was correct (Bruce was right all the time) but we forgot to make the function async, which is required to use await.
+    const headerTemplate = await loadTemplate("/partials/header.html");   //W03: the await keyword was correct (Bruce was right all the time) but we forgot to make the function async, which is required to use await.
     const headerElement = document.querySelector("#dynamic-header");
 
-    const footerTemplate = await loadTemplate("../partials/footer.html");
+    const footerTemplate = await loadTemplate("/partials/footer.html");
     const footerElement = document.querySelector("#dynamic-footer");
 
     renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
