@@ -7,7 +7,7 @@ export function updateCartCount() {
     const cart = getLocalStorage("so-cart") || [];
 
     // Count items
-    const count = cart.length;
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
 
     // Select the cart badge in DOM
     const badge = document.querySelector(".cart-count");
