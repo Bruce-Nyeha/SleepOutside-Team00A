@@ -26,8 +26,35 @@ export default class ProductDetails {
     }
 
     addProductToCart() {
+        // Get the current cart from localStorage
+        // If the cart doesn't exist yet, use an empty array instead
         let cartItems = getLocalStorage("so-cart") || [];
-        cartItems.push(this.product);
+
+        // Check if product already exists in cart
+        const existingItem = cartItems.find((item) => item.Id === this.product.Id);
+
+        // It item exists, increase quantity
+        if (existingItem) {
+            existingItem.quantity += 1;
+        }
+
+        // If item does not exist, create new cart item
+        else {
+            const cartItem = {
+                Id: this.product.Id,
+                Name: this.product.Name,
+                FinalPrice: this.product.FinalPrice,
+                Images: this.product.Images,
+                Colors: this.product.Colors,
+                quantity: 1
+            }
+
+            // Add the new cart item to the cart array
+            cartItems.push(cartItem);
+        }
+
+
+        // Save the updated cart back to localStorage
         setLocalStorage("so-cart", cartItems);
     }
 
