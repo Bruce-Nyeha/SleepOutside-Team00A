@@ -19,7 +19,7 @@ function checkCartTotal(cartItems) {
       0,
     );
 
-    document.querySelector(".total-amount").textContent =
+    document.querySelector("#total-cart").textContent =
       `$${total.toFixed(2)}`;
   } else {
     cartFooter.classList.add("hide");
