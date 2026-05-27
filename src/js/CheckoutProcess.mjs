@@ -16,19 +16,42 @@ export default class CheckoutProcess {
     init() { 
         this.cartItems = getLocalStorage(this.key) || [];
         this.calculateItemSummary();
+        console.log(this.itemCount);
     }
 
     calculateItemSummary() { 
         let taxRate = 0.06;
+        let shipping = 0;
 
         this.itemCount = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
         this.subtotal = this.cartItems.reduce((sum, item) => sum + item.FinalPrice * item.quantity, 0);
         this.tax = this.subtotal * taxRate;
-        this.shipping = this.itemCount > 0 ? 5.99 : 0; // dummy flat shipping rate
+        
+        if (this.itemCount > 0) {
+            shipping = 10 + (this.itemCount - 1) * 2;
+        }
+        
+        this.shipping = shipping;
         this.orderTotal = this.subtotal + this.tax + this.shipping;
 
         this.displayOrderTotals();
     }
+
+
+   
+
+    /*
+    if (this.itemCount == 0) {
+    shipping = 0;
+    }
+    if (this.itemCount == 1) {
+    shipping = 10;
+    } else if (this.itemCount > 1){
+    shipping = 10 + ((item.Count - 1) * 2));
+    } 
+    
+    
+    */
 
     displayOrderTotals() { 
         document.querySelector("#num-items").textContent = this.itemCount;
