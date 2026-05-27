@@ -1,4 +1,31 @@
 import { getLocalStorage } from "./utils.mjs";
+import ExternalServices from "./ExternalServices.mjs";
+
+const services = new ExternalServices();
+
+function formDataToJSON(formElement) {
+    // convert the form data to a JSON object
+    const formData = new FormData(formElement);
+    const convertedJSON = {};
+    formData.forEach((value, key) => {
+        convertedJSON[key] = value;
+    });
+    return convertedJSON;
+}
+
+
+function packageItems(items) {
+    const simplifiedItems = items.map((item) => {
+        console.log(item);
+        return {
+            id: item.Id,
+            price: item.FinalPrice,
+            name: item.Name,
+            quantity: 1,
+        };
+    });
+    return simplifiedItems;
+}
 
 export default class CheckoutProcess { 
     constructor(key, outputSelector) { 
@@ -16,7 +43,6 @@ export default class CheckoutProcess {
     init() { 
         this.cartItems = getLocalStorage(this.key) || [];
         this.calculateItemSummary();
-        console.log(this.itemCount);
     }
 
     calculateItemSummary() { 
@@ -38,21 +64,6 @@ export default class CheckoutProcess {
     }
 
 
-   
-
-    /*
-    if (this.itemCount == 0) {
-    shipping = 0;
-    }
-    if (this.itemCount == 1) {
-    shipping = 10;
-    } else if (this.itemCount > 1){
-    shipping = 10 + ((item.Count - 1) * 2));
-    } 
-    
-    
-    */
-
     displayOrderTotals() { 
         document.querySelector("#num-items").textContent = this.itemCount;
         document.querySelector("#total-cart").textContent = `$${this.subtotal.toFixed(2)}`;
@@ -60,4 +71,24 @@ export default class CheckoutProcess {
         document.querySelector("#shipping").textContent = `$${this.shipping.toFixed(2)}`;
         document.querySelector("#orderTotal").textContent = `$${this.orderTotal.toFixed(2)}`;
     }
+
+    async checkout() {
+        const formElement = document.forms["checkout"];
+        const order = formDataToJSON(formElement);
+
+        order.orderDate = new Date().toISOString();
+        order.orderTotal = this.orderTotal;
+        order.tax = this.tax;
+        order.shipping = this.shipping;
+        order.items = packageItems(this.list);
+        console.log(order);
+
+        try {
+            const response = await services.checkout(order);
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    
 }
