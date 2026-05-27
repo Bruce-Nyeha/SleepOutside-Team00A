@@ -19,7 +19,7 @@ function packageItems(items) {
         console.log(item);
         return {
             id: item.Id,
-            price: item.FinalPrice,
+            price: Number(item.FinalPrice),
             name: item.Name,
             quantity: 1,
         };
@@ -77,11 +77,11 @@ export default class CheckoutProcess {
         const order = formDataToJSON(formElement);
 
         order.orderDate = new Date().toISOString();
-        order.orderTotal = this.orderTotal;
-        order.tax = this.tax;
+        order.orderTotal = this.orderTotal.toFixed(2);
+        order.tax = this.tax.toFixed(2);
         order.shipping = this.shipping;
-        order.items = packageItems(this.list);
-        console.log(order);
+        order.items = packageItems(this.cartItems);
+        console.log("Objeto: ",order);
 
         try {
             const response = await services.checkout(order);
@@ -90,5 +90,5 @@ export default class CheckoutProcess {
             console.log(err);
         }
     }
-    
+
 }
