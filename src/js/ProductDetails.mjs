@@ -1,6 +1,7 @@
 
 // Dynamically produces the product detail pages
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { updateCartCount } from "./CartItemCount.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -56,6 +57,32 @@ export default class ProductDetails {
 
         // Save the updated cart back to localStorage
         setLocalStorage("so-cart", cartItems);
+
+        // update cart badge count
+        updateCartCount();
+
+        // trigger cart icon animation
+        this.animateCartIcon();
+    }
+
+    animateCartIcon() {
+        // select the cart icon
+        const cartIcon = document.querySelector(".cart svg");
+
+        // safety check in case header is not loaded yet
+        if (!cartIcon) {
+            console.warn("Cart icon not found. Animation.");
+            return;
+        }
+
+        // remove the animation class if it already exists to make sure that the animation restarts properly
+        cartIcon.classList.remove("cart-bounce");
+
+        // force reflow so the browser resets the animation state for repeated animations
+        void cartIcon.offsetWidth;
+
+        // add animation class to trigger css animation
+        cartIcon.classList.add("cart-bounce");
     }
 
     renderProductDetails() {
