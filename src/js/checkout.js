@@ -3,16 +3,23 @@ import CheckoutProcess from "./CheckoutProcess.mjs";
 
 loadHeaderFooter();
 
-const checkoutObject = new CheckoutProcess("so-cart", ".products");
+const checkoutObject = new CheckoutProcess("so-cart", "#checkout");
 
 checkoutObject.init();
 
-const formulario = document.forms["checkout"];
+const form = document.forms["checkout"];
 
 // Listen for the submit event on the form
-formulario.addEventListener("submit", (event) => {
-  event.preventDefault(); // It prevents doing what it would normally do on submit (refreshing both the page and the console)
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); 
 
-  // Call the checkout method of the checkoutObject (CheckoutProcess instance)
+ //check form validation status
+ const isValid = form.checkValidity();
+
+if (!isValid) {
+form.reportValidity();
+} else {
   checkoutObject.checkout();
+}
+  
 });

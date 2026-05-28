@@ -1,6 +1,6 @@
 
 // Dynamically produces the product detail pages
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -25,19 +25,17 @@ export default class ProductDetails {
 
     }
 
-    addProductToCart() {
+        addProductToCart() {
         // Get the current cart from localStorage
-        // If the cart doesn't exist yet, use an empty array instead
         let cartItems = getLocalStorage("so-cart") || [];
 
         // Check if product already exists in cart
         const existingItem = cartItems.find((item) => item.Id === this.product.Id);
 
-        // It item exists, increase quantity
+        // If item exists, increase quantity
         if (existingItem) {
             existingItem.quantity += 1;
         }
-
         // If item does not exist, create new cart item
         else {
             const cartItem = {
@@ -53,9 +51,16 @@ export default class ProductDetails {
             cartItems.push(cartItem);
         }
 
-
         // Save the updated cart back to localStorage
         setLocalStorage("so-cart", cartItems);
+
+        //  Clear any old active banners sitting on top of the screen first
+        const existingAlerts = document.querySelectorAll(".alert");
+        existingAlerts.forEach(alert => alert.remove());
+
+        // Fire your custom reusable utility success banner!
+        // We pass 'false' so the viewport stays stable while they are looking at the button
+        alertMessage(`${this.product.Name} successfully added to your cart! `, false);
     }
 
     renderProductDetails() {

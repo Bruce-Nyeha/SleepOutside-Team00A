@@ -69,3 +69,29 @@ export async function loadHeaderFooter() {
     renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
     renderWithTemplate(footerTemplate, footerElement);
 }
+
+// Reusable custom alert banner function
+export function alertMessage(message, scroll = true) {
+  // 1. Create a brand new container element for the alert
+  const alertElement = document.createElement("div");
+  alertElement.classList.add("alert");
+
+  // 2. Populate it with the text string and a neat close button
+  alertElement.innerHTML = `<p>${message}</p><span>❌</span>`;
+
+  // 3. Set up a click listener on the close button to remove it gracefully
+  alertElement.querySelector("span").addEventListener("click", () => {
+    alertElement.remove();
+  });
+
+  // 4. Target the main content section and prepend the banner right at the top
+  const mainElement = document.querySelector("main");
+  if (mainElement) {
+    mainElement.prepend(alertElement);
+  }
+
+  // 5. If scroll is true, smoothly snap the window viewport back up to the top
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}

@@ -1,5 +1,5 @@
 import { getLocalStorage } from "./utils.mjs";
-import ExternalServices from "./ExternalServices.mjs";
+import { ExternalServices }from "./ExternalServices.mjs";
 
 const services = new ExternalServices();
 
@@ -21,7 +21,7 @@ function packageItems(items) {
             id: item.Id,
             price: Number(item.FinalPrice),
             name: item.Name,
-            quantity: 1,
+            quantity: item.quantity,
         };
     });
     return simplifiedItems;
@@ -81,14 +81,21 @@ export default class CheckoutProcess {
         order.tax = this.tax.toFixed(2);
         order.shipping = this.shipping;
         order.items = packageItems(this.cartItems);
-        console.log("Objeto: ",order);
+        console.log("Object: ",order);
 
-        try {
+               try {
             const response = await services.checkout(order);
-            console.log(response);
+            console.log("Server success response:", response);
+
+            // Clear out the cart items from the browser's localStorage memory
+            localStorage.removeItem(this.key);
+
+            // Take the user directly to your new success page
+            window.location.href = "success.html";
+
         } catch (err) {
             console.log(err);
         }
-    }
 
+    }
 }
