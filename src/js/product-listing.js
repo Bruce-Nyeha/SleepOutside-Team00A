@@ -1,35 +1,25 @@
-import { loadHeaderFooter } from "./utils.mjs";
-import ProductData from "./ProductData.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 import ProductList from "./ProductList.mjs";
+import { loadHeaderFooter, getParam } from "./utils.mjs";
 
-loadHeaderFooter();
+async function main() {
+  await loadHeaderFooter();
 
-// Wait until the DOM is fully loaded before running any DOM queries
-document.addEventListener("DOMContentLoaded", () => {
-  // Read category from URL
-  const params = new URLSearchParams(window.location.search);
-  const category = params.get("category");
+  const category = getParam("category") || "tents";
+  const titleSpan = document.querySelector(".title");
 
-  // Update page title dynamically
-  const titleElement = document.querySelector("#page-title");
-  if (titleElement && category) {
-    const formattedCategory = category
-      ? category.replace("-", " ").replace(/\b\w/g, (c) => c.toUpperCase())
-      : "";
-    titleElement.textContent = `Top Products: ${formattedCategory}`;
+  if (titleSpan) {
+    titleSpan.textContent = category
+      .replace("-", " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   }
 
-  // Create data source (API connection)
-  const dataSource = new ProductData(category);
-
-  // Get the container where products will be rendered
+  const dataSource = new ExternalServices();
   const listElement = document.querySelector(".product-list");
-
-  // Create ProductList instance and initialize it
   const productList = new ProductList(category, dataSource, listElement);
+
   productList.init();
 
-  // Sorting functionality (dropdown listener)
   const sortSelect = document.querySelector("#sort-select");
 
   if (sortSelect) {
@@ -38,4 +28,5 @@ document.addEventListener("DOMContentLoaded", () => {
       productList.sortList(criteria);
     });
   }
-});
+}
+main();

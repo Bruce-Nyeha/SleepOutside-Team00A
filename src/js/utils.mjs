@@ -44,28 +44,67 @@ export function renderListWithTemplate(templateFn, parentElement, list, position
 }
 
 export function renderWithTemplate(template, parentElement, data, callback) {
-    
-    parentElement.innerHTML = template;
 
-    if (callback) {
-        callback(data);
-    }
-   
+  parentElement.innerHTML = template;
+
+  if (callback) {
+    callback(data);
+  }
+
 }
 
 export async function loadTemplate(path) {
-    const response = await fetch(path);
-    const template = await response.text();
-    return template;
+  const response = await fetch(path);
+  const template = await response.text();
+  return template;
 }
 
-export async function loadHeaderFooter() { 
-    const headerTemplate = await loadTemplate("../partials/header.html");   //W03: the await keyword was correct (Bruce was right all the time) but we forgot to make the function async, which is required to use await.
-    const headerElement = document.querySelector("#dynamic-header");
+export async function loadHeaderFooter() {
+  const headerTemplate = await loadTemplate("../partials/header.html");   //W03: the await keyword was correct (Bruce was right all the time) but we forgot to make the function async, which is required to use await.
+  const headerElement = document.querySelector("#dynamic-header");
 
-    const footerTemplate = await loadTemplate("../partials/footer.html");
-    const footerElement = document.querySelector("#dynamic-footer");
+  const footerTemplate = await loadTemplate("../partials/footer.html");
+  const footerElement = document.querySelector("#dynamic-footer");
 
-    renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
-    renderWithTemplate(footerTemplate, footerElement);
+  renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
+  renderWithTemplate(footerTemplate, footerElement);
 }
+
+export function alertMessage(message, scroll = true) {
+  // get the main element where the alert will be inserted
+  const main = document.querySelector("main");
+
+  // if main is missing
+  if (!main) return;
+
+  // create element to hold the alert
+  const alert = document.createElement("div");
+
+  // add a class to style the alert
+  alert.classList.add("alert");
+
+  // create message text
+  const messageElement = document.createElement("p");
+  messageElement.textContent = message;
+
+  // create close button
+  const closeButton = document.createElement("span");
+  closeButton.textContent = "✖";
+  closeButton.classList.add("alert-close");
+
+  // append message and close button to alert
+  alert.appendChild(messageElement);
+  alert.appendChild(closeButton);
+
+  // remove alert when clicking the close button
+    closeButton.addEventListener("click", function () {
+      main.removeChild(alert);
+    });
+  
+  // add the alert to the top of main
+  main.prepend(alert);
+  
+  // scroll user to the top of main to see the alert
+  if (scroll)
+    window.scrollTo(0, 0);
+};
