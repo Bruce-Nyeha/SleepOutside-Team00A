@@ -78,11 +78,12 @@ export default class ProductDetails {
         // remove the animation class if it already exists to make sure that the animation restarts properly
         cartIcon.classList.remove("cart-bounce");
 
-        // force reflow so the browser resets the animation state for repeated animations
-        void cartIcon.offsetWidth;
-
-        // add animation class to trigger css animation
-        cartIcon.classList.add("cart-bounce");
+        // force browser to recognize the remove before re-adding
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                cartIcon.classList.add("cart-bounce");
+            });
+        });
     }
 
     renderProductDetails() {
