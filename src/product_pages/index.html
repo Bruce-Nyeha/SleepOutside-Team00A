@@ -38,6 +38,34 @@
           factory-sealed rain fly
         </p>
 
+        <section class="product-comments">
+          <h3>Customer Reviews</h3>
+
+          <!-- This is where existing comments will be displayed dynamically -->
+          <div id="comments-list"></div>
+
+          <!-- Form to submit a new comment -->
+          <form id="comment-form">
+            <label for="comment-author">Your Name:</label>
+            <input
+              type="text"
+              id="comment-author"
+              required
+              placeholder="Enter your name"
+            />
+
+            <label for="comment-text">Your Review:</label>
+            <textarea
+              id="comment-text"
+              required
+              placeholder="Write your review here..."
+              rows="4"
+            ></textarea>
+
+            <button type="submit" id="submit-comment">Submit Review</button>
+          </form>
+        </section>
+
         <div class="product-detail__add">
           <button id="addToCart" data-id="344YJ">Add to Cart</button>
         </div>
