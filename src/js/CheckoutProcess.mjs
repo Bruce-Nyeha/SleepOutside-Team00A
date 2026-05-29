@@ -1,4 +1,4 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, alertMessage } from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 const services = new ExternalServices();
@@ -81,13 +81,24 @@ export default class CheckoutProcess {
         order.tax = this.tax.toFixed(2);
         order.shipping = this.shipping;
         order.items = packageItems(this.cartItems);
-        console.log("Objeto: ",order);
+        console.log("Object: ",order);
 
         try {
+            // Success branch - send the order to the server and log the response
             const response = await services.checkout(order);
-            console.log(response);
+            console.log("Success: ", response);
+            // Empty the cart
+            localStorage.removeItem("so-cart");
+            // Redirect to the success page
+            window.location.href = "/checkout/success.html";
+
+
         } catch (err) {
-            console.log(err);
+            console.log("Error: ", err);
+
+            for (let key in err.message) {
+                alertMessage(err.message[key]);
+            }
         }
     }
 

@@ -317,6 +317,28 @@ button {
   font-weight: bold;
 }
 
+/*Alert Message Styles*/
+.alert {
+    background-color: #fff3cd;
+  
+    color: #856404;
+    border: 1px solid #ffeeba;
+
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.alert-close {
+    font-weight: bold;
+    transition: color 0.2s;
+}
+
+.alert-close:hover {
+    color: #000;
+}
+
 @media screen and (min-width: 500px) {
   body {
     max-width: 1080px;

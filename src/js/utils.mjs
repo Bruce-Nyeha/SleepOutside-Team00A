@@ -69,3 +69,39 @@ export async function loadHeaderFooter() {
     renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
     renderWithTemplate(footerTemplate, footerElement);
 }
+
+export function alertMessage(message, scroll = true) {
+    const main = document.querySelector('main');
+    if (!main) return;
+
+    const alert = document.createElement('div');
+    alert.classList.add('alert');
+
+    // Le metemos estilos inline bien fuertes para que se vea sí o sí
+    alert.style.backgroundColor = '#f8d7da';
+    alert.style.color = '#721c24';
+    alert.style.border = '1px solid #f5c6cb';
+    alert.style.padding = '15px';
+    alert.style.margin = '15px 0';
+    alert.style.borderRadius = '4px';
+    alert.style.display = 'flex';
+    alert.style.justifyContent = 'space-between';
+    alert.style.alignItems = 'center';
+    alert.style.fontWeight = 'bold';
+    alert.style.fontFamily = 'sans-serif';
+
+    alert.innerHTML = `<span>${message}</span><span class="alert-close" style="cursor: pointer; font-weight: bold; padding: 0 10px;">X</span>`;
+
+    alert.addEventListener('click', function (e) {
+        if (e.target.classList.contains('alert-close') || e.target.innerText === 'X') {
+            main.removeChild(this);
+        }
+    });
+
+    // Lo inyectamos arriba de todo adentro de <main>
+    main.prepend(alert);
+
+    if (scroll) {
+        window.scrollTo(0, 0);
+    }
+}
