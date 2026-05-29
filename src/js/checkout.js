@@ -4,6 +4,7 @@ import CheckoutProcess from "./CheckoutProcess.mjs";
 // load shared header and footer
 loadHeaderFooter();
 
+<<<<<<< HEAD
 // create an instance of CheckoutProcess
 // "so-cart" is the localStorage key for cart items
 // ".products" is the selector where product output may be displayed
@@ -37,4 +38,24 @@ form.addEventListener("submit", function (event) {
     // call the checkout method from CheckoutProcess instance
     // handles: form data collection, order object creation, API request, success/error handling
     checkoutObject.checkout();
+=======
+const checkoutObject = new CheckoutProcess("so-cart", "#checkout");
+
+checkoutObject.init();
+
+const form = document.forms["checkout"];
+
+// Listen for the submit event on the form
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  //check form validation status
+  const isValid = form.checkValidity();
+
+  if (!isValid) {
+    form.reportValidity();
+  } else {
+    checkoutObject.checkout();
+  }
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
 });

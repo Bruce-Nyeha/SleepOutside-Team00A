@@ -1,7 +1,10 @@
-
 // Dynamically produces the product detail pages
+<<<<<<< HEAD
 import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { updateCartCount } from "./CartItemCount.mjs";
+=======
+import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -10,37 +13,36 @@ export default class ProductDetails {
         this.dataSource = dataSource;
     }
 
-    // initialize page
+    // Initialize page elements
     async init() {
-        // Use the data source to get the details for the current product
+        // Fetch product info from server
         this.product = await this.dataSource.findProductById(this.productId);
 
-        // The product details are needed before rendering the HTML
+        // Draw the main product information onto the screen
         this.renderProductDetails();
 
-        // Once the HTML is rendered, add a listener to the Add to Cart button
-        // Notice the .bind(this). This callback will not work if the bind(this) is missing
+        // 🚀 TRIGGER: Load any saved reviews for this item right away
+        this.renderComments();
+
+        // Add a click listener to the Add to Cart button
         document
             .getElementById("addToCart")
             .addEventListener("click", this.addProductToCart.bind(this));
 
+        // Listen for review form submissions
+        document
+            .getElementById("comment-form")
+            .addEventListener("submit", this.addComment.bind(this));
     }
 
+    // Handle Cart Submissions
     addProductToCart() {
-        // Get the current cart from localStorage
-        // If the cart doesn't exist yet, use an empty array instead
         let cartItems = getLocalStorage("so-cart") || [];
-
-        // Check if product already exists in cart
         const existingItem = cartItems.find((item) => item.Id === this.product.Id);
 
-        // It item exists, increase quantity
         if (existingItem) {
             existingItem.quantity += 1;
-        }
-
-        // If item does not exist, create new cart item
-        else {
+        } else {
             const cartItem = {
                 Id: this.product.Id,
                 Name: this.product.Name,
@@ -48,16 +50,13 @@ export default class ProductDetails {
                 Images: this.product.Images,
                 Colors: this.product.Colors,
                 quantity: 1
-            }
-
-            // Add the new cart item to the cart array
+            };
             cartItems.push(cartItem);
         }
 
-
-        // Save the updated cart back to localStorage
         setLocalStorage("so-cart", cartItems);
 
+<<<<<<< HEAD
         // update cart badge count
         updateCartCount();
 
@@ -84,31 +83,76 @@ export default class ProductDetails {
                 cartIcon.classList.add("cart-bounce");
             });
         });
+=======
+        // Clear any old active banners first
+        const existingAlerts = document.querySelectorAll(".alert");
+        existingAlerts.forEach(alert => alert.remove());
+
+        // Fire your custom cart success alert banner
+        alertMessage(`${this.product.Name} successfully added to your cart!`, false);
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
     }
 
+    // Render Product Info Blocks to DOM
     renderProductDetails() {
-        document.querySelector(".product-detail h3").textContent =
-            this.product.Brand.Name;
+        document.querySelector(".product-detail h3").textContent = this.product.Brand.Name;
+        document.querySelector(".product-detail h2").textContent = this.product.Name;
+        document.querySelector(".product-detail img").src = this.product.Images.PrimaryLarge;
+        document.querySelector(".product-detail img").alt = this.product.Name;
+        document.querySelector(".product-card__price").textContent = `$${this.product.FinalPrice}`;
+        document.querySelector(".product__color").textContent = this.product.Colors[0].ColorName;
+        document.querySelector(".product__description").textContent = this.product.Description;
+        document.querySelector("#addToCart").dataset.id = this.product.Id;
+    }
 
-        document.querySelector(".product-detail h2").textContent =
-            this.product.Name;
+    // Render Item Reviews
+    renderComments() {
+        const commentsContainer = document.getElementById("comments-list");
+        if (!commentsContainer) return;
 
-        document.querySelector(".product-detail img").src =
-            this.product.Images.PrimaryLarge;
+        const commentsKey = `comments-${this.productId}`;
+        const comments = getLocalStorage(commentsKey) || [];
 
-        document.querySelector(".product-detail img").alt =
-            this.product.Name;
+        commentsContainer.innerHTML = "";
 
-        document.querySelector(".product-card__price").textContent =
-            `$${this.product.FinalPrice}`;
+        if (comments.length === 0) {
+            commentsContainer.innerHTML = "<p class='no-comments'>No reviews yet. Be the first to write one!</p>";
+            return;
+        }
 
-        document.querySelector(".product__color").textContent =
-            this.product.Colors[0].ColorName;
+        comments.forEach(comment => {
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("comment-card");
+            commentDiv.innerHTML = `
+                <p class="comment-meta"><strong>${comment.author}</strong> • <small>${comment.date}</small></p>
+                <p class="comment-content">${comment.text}</p>
+            `;
+            commentsContainer.appendChild(commentDiv);
+        });
+    }
 
-        document.querySelector(".product__description").textContent =
-            this.product.Description;
+    // Save and Display New Reviews
+    addComment(event) {
+        event.preventDefault();
 
-        document.querySelector("#addToCart").dataset.id =
-            this.product.Id;
+        const authorInput = document.getElementById("comment-author");
+        const textInput = document.getElementById("comment-text");
+
+        const newComment = {
+            author: authorInput.value,
+            text: textInput.value,
+            date: new Date().toLocaleDateString()
+        };
+
+        const commentsKey = `comments-${this.productId}`;
+        let comments = getLocalStorage(commentsKey) || [];
+
+        comments.push(newComment);
+        setLocalStorage(commentsKey, comments);
+
+        authorInput.value = "";
+        textInput.value = "";
+
+        this.renderComments();
     }
 }

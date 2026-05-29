@@ -1,6 +1,7 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 async function convertToJson(res) {
+<<<<<<< HEAD
   let jsonResponse;
   
   try {
@@ -17,11 +18,24 @@ async function convertToJson(res) {
   } else {
     // if request failed, throw structured error object
     throw { name: "servicesError", message: jsonResponse };
+=======
+  const jsonResponse = await res.json(); 
+  
+  if (res.ok) {
+    return jsonResponse;
+  } else {
+    // console.log("Message from server:", jsonResponse);
+    throw {name:"servicesError", message: jsonResponse };
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
   }
 }
 
 export default class ExternalServices {
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
   async getData(category) {
     const response = await fetch(`${baseURL}products/search/${category}`);
     const data = await convertToJson(response);
@@ -35,6 +49,7 @@ export default class ExternalServices {
   }
 
 
+<<<<<<< HEAD
   async checkout(payload) {
     const options = {
       method: "POST",
@@ -51,3 +66,16 @@ export default class ExternalServices {
     return result;
   }
 }
+=======
+    async checkout(payload) {
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        };
+        return await fetch(`${baseURL}checkout/`, options).then(convertToJson);
+    }
+}
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b

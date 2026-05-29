@@ -13,7 +13,7 @@ export function getLocalStorage(key) {
 }
 // save data to local storage
 export function setLocalStorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
+    localStorage.setItem(key, JSON.stringify(data));
 }
 // set a listener for both touchend and click
 export function setClick(selector, callback) {
@@ -66,6 +66,7 @@ export async function loadHeaderFooter() {
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#dynamic-footer");
 
+<<<<<<< HEAD
   renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
   renderWithTemplate(footerTemplate, footerElement);
 }
@@ -108,3 +109,34 @@ export function alertMessage(message, scroll = true) {
   if (scroll)
     window.scrollTo(0, 0);
 };
+=======
+    renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
+    renderWithTemplate(footerTemplate, footerElement);
+}
+
+// Reusable custom alert banner function
+export function alertMessage(message, scroll = true) {
+  // 1. Create a brand new container element for the alert
+  const alertElement = document.createElement("div");
+  alertElement.classList.add("alert");
+
+  // 2. Populate it with the text string and a neat close button
+  alertElement.innerHTML = `<p>${message}</p><span>❌</span>`;
+
+  // 3. Set up a click listener on the close button to remove it gracefully
+  alertElement.querySelector("span").addEventListener("click", () => {
+    alertElement.remove();
+  });
+
+  // 4. Target the main content section and prepend the banner right at the top
+  const mainElement = document.querySelector("main");
+  if (mainElement) {
+    mainElement.prepend(alertElement);
+  }
+
+  // 5. If scroll is true, smoothly snap the window viewport back up to the top
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+>>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
