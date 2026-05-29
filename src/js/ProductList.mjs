@@ -33,10 +33,10 @@ export default class ProductList {
         renderListWithTemplate(productCardTemplate, this.listElement, list, "afterbegin", false);
     }
 
-    sortList(criteria) { 
+    sortList(criteria) {
         let sortedList = Array.isArray(this.products) ? [...this.products] : [];
 
-        if (sortedList.length === 0) { 
+        if (sortedList.length === 0) {
             return;
         }
 
@@ -47,7 +47,7 @@ export default class ProductList {
             "price-desc": (a, b) => parseFloat(b.FinalPrice) - parseFloat(a.FinalPrice)
         };
 
-        if (sortOptions[criteria]) { 
+        if (sortOptions[criteria]) {
             sortedList.sort(sortOptions[criteria]);
         }
 
