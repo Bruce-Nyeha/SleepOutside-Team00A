@@ -358,3 +358,54 @@ footer {
   padding: 1em;
 }
 
+/* Product Reviews Styles */
+.product-comments {
+  margin: 3rem 0;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.comment-card {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #303030;
+  border-radius: 4px;
+}
+
+.comment-meta {
+  margin: 0 0 0.5rem 0;
+  color: #555;
+}
+
+.comment-content {
+  margin: 0;
+}
+
+#comment-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin-top: 2rem;
+}
+
+#comment-form input,
+#comment-form textarea {
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#comment-form button {
+  background-color: #303030;
+  color: white;
+  padding: 0.7rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#comment-form button:hover {
+  background-color: #555;
+}

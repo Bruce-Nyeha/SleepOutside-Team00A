@@ -11,15 +11,14 @@ const form = document.forms["checkout"];
 
 // Listen for the submit event on the form
 form.addEventListener("submit", (event) => {
-  event.preventDefault(); 
+  event.preventDefault();
 
- //check form validation status
- const isValid = form.checkValidity();
+  //check form validation status
+  const isValid = form.checkValidity();
 
-if (!isValid) {
-form.reportValidity();
-} else {
-  checkoutObject.checkout();
-}
-  
+  if (!isValid) {
+    form.reportValidity();
+  } else {
+    checkoutObject.checkout();
+  }
 });
