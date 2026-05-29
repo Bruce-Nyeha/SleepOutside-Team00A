@@ -66,50 +66,6 @@ export async function loadHeaderFooter() {
   const footerTemplate = await loadTemplate("../partials/footer.html");
   const footerElement = document.querySelector("#dynamic-footer");
 
-<<<<<<< HEAD
-  renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
-  renderWithTemplate(footerTemplate, footerElement);
-}
-
-export function alertMessage(message, scroll = true) {
-  // get the main element where the alert will be inserted
-  const main = document.querySelector("main");
-
-  // if main is missing
-  if (!main) return;
-
-  // create element to hold the alert
-  const alert = document.createElement("div");
-
-  // add a class to style the alert
-  alert.classList.add("alert");
-
-  // create message text
-  const messageElement = document.createElement("p");
-  messageElement.textContent = message;
-
-  // create close button
-  const closeButton = document.createElement("span");
-  closeButton.textContent = "✖";
-  closeButton.classList.add("alert-close");
-
-  // append message and close button to alert
-  alert.appendChild(messageElement);
-  alert.appendChild(closeButton);
-
-  // remove alert when clicking the close button
-    closeButton.addEventListener("click", function () {
-      main.removeChild(alert);
-    });
-  
-  // add the alert to the top of main
-  main.prepend(alert);
-  
-  // scroll user to the top of main to see the alert
-  if (scroll)
-    window.scrollTo(0, 0);
-};
-=======
     renderWithTemplate(headerTemplate, headerElement, null, updateCartCount);
     renderWithTemplate(footerTemplate, footerElement);
 }
@@ -139,4 +95,3 @@ export function alertMessage(message, scroll = true) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 }
->>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b

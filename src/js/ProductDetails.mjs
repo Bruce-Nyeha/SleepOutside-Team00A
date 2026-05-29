@@ -1,10 +1,5 @@
 // Dynamically produces the product detail pages
-<<<<<<< HEAD
-import { getLocalStorage, setLocalStorage } from "./utils.mjs";
-import { updateCartCount } from "./CartItemCount.mjs";
-=======
 import { getLocalStorage, setLocalStorage, alertMessage } from "./utils.mjs";
->>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
 
 export default class ProductDetails {
     constructor(productId, dataSource) {
@@ -56,41 +51,12 @@ export default class ProductDetails {
 
         setLocalStorage("so-cart", cartItems);
 
-<<<<<<< HEAD
-        // update cart badge count
-        updateCartCount();
-
-        // trigger cart icon animation
-        this.animateCartIcon();
-    }
-
-    animateCartIcon() {
-        // select the cart icon
-        const cartIcon = document.querySelector(".cart svg");
-
-        // safety check in case header is not loaded yet
-        if (!cartIcon) {
-            console.warn("Cart icon not found. Animation.");
-            return;
-        }
-
-        // remove the animation class if it already exists to make sure that the animation restarts properly
-        cartIcon.classList.remove("cart-bounce");
-
-        // force browser to recognize the remove before re-adding
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                cartIcon.classList.add("cart-bounce");
-            });
-        });
-=======
         // Clear any old active banners first
         const existingAlerts = document.querySelectorAll(".alert");
         existingAlerts.forEach(alert => alert.remove());
 
         // Fire your custom cart success alert banner
         alertMessage(`${this.product.Name} successfully added to your cart!`, false);
->>>>>>> e88f3395ceb32a95b67ccb3ddca3448aa7c0b45b
     }
 
     // Render Product Info Blocks to DOM
