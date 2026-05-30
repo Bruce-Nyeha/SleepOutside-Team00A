@@ -1,10 +1,9 @@
-import { getLocalStorage } from "./utils.mjs";
-import { ExternalServices }from "./ExternalServices.mjs";
+import { getLocalStorage, alertMessage } from "./utils.mjs";
+import ExternalServices from "./ExternalServices.mjs";
 
 const services = new ExternalServices();
 
 function formDataToJSON(formElement) {
-    // convert the form data to a JSON object
     const formData = new FormData(formElement);
     const convertedJSON = {};
     formData.forEach((value, key) => {
@@ -13,10 +12,8 @@ function formDataToJSON(formElement) {
     return convertedJSON;
 }
 
-
 function packageItems(items) {
-    const simplifiedItems = items.map((item) => {
-        console.log(item);
+    return items.map((item) => {
         return {
             id: item.Id,
             price: Number(item.FinalPrice),
@@ -24,20 +21,18 @@ function packageItems(items) {
             quantity: item.quantity,
         };
     });
-    return simplifiedItems;
 }
 
 export default class CheckoutProcess { 
     constructor(key, outputSelector) { 
-        this.key = key; // "so-cart"
-        this.outputSelector = outputSelector; // "#total-cart"
+        this.key = key; 
+        this.outputSelector = outputSelector; 
         this.cartItems = [];
         this.itemCount = 0;
         this.subtotal = 0;
         this.tax = 0;
         this.shipping = 0;
         this.orderTotal = 0;
-        
     }
 
     init() { 
@@ -63,7 +58,6 @@ export default class CheckoutProcess {
         this.displayOrderTotals();
     }
 
-
     displayOrderTotals() { 
         document.querySelector("#num-items").textContent = this.itemCount;
         document.querySelector("#total-cart").textContent = `$${this.subtotal.toFixed(2)}`;
@@ -81,21 +75,35 @@ export default class CheckoutProcess {
         order.tax = this.tax.toFixed(2);
         order.shipping = this.shipping;
         order.items = packageItems(this.cartItems);
-        console.log("Object: ",order);
+        console.log("Object: ", order);
 
-               try {
+        try {
             const response = await services.checkout(order);
             console.log("Server success response:", response);
 
-            // Clear out the cart items from the browser's localStorage memory
+            // Clear out local storage cart contents cleanly
             localStorage.removeItem(this.key);
 
-            // Take the user directly to your new success page
+            // Redirect the window viewport to the success confirmation page
             window.location.href = "success.html";
 
         } catch (err) {
-            console.log(err);
-        }
+            console.log("Captured errors: ", err);
 
+            // Clear out any old hanging alert blocks first
+            const existingAlerts = document.querySelectorAll(".alert");
+            existingAlerts.forEach(alert => alert.remove());
+
+            // Loop and render dynamic alert messages for missing inputs
+            if (err.message && typeof err.message === "object") {
+                for (let key in err.message) {
+                    alertMessage(err.message[key], true);
+                }
+            } else if (typeof err.message === "string") {
+                alertMessage(err.message, true);
+            } else {
+                alertMessage("An error occurred during checkout. Please verify fields and try again.", true);
+            }
+        }
     }
 }
