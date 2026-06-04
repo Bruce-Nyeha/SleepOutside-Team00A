@@ -1,5 +1,6 @@
-import { getLocalStorage } from "./utils.mjs";
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 import { loadHeaderFooter } from "./utils.mjs";
+import { updateCartCount } from "./CartItemCount.mjs";
 
 function renderCartContents() {
   const cartItems = getLocalStorage("so-cart") || [];
@@ -28,6 +29,7 @@ function checkCartTotal(cartItems) {
 function cartItemTemplate(item) {
   const imageSource = item.Images?.PrimaryMedium || item.Images?.PrimaryLarge;
   const newItem = `<li class="cart-card divider">
+  <span class="cart-card__remove" data-id="${item.Id}" role="button" aria-label="Remove ${item.Name} from cart" title="Remove item">&#10005;</span>
   <a href="#" class="cart-card__image">
     <img
       src="${imageSource}"
@@ -45,5 +47,23 @@ function cartItemTemplate(item) {
   return newItem;
 }
 
+function removeFromCart(id) {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const updated = cartItems.filter((item) => String(item.Id) !== String(id));
+  setLocalStorage("so-cart", updated);
+  renderCartContents();
+  updateCartCount();
+}
+
+function handleCartListClick(event) {
+  const btn = event.target.closest(".cart-card__remove");
+  if (!btn) return;
+  const id = btn.dataset.id;
+  removeFromCart(id);
+}
+
 renderCartContents();
 loadHeaderFooter();
+document
+  .querySelector(".product-list")
+  .addEventListener("click", handleCartListClick);
