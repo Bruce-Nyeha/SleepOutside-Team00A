@@ -362,6 +362,45 @@ button {
   grid-row: 1;
   justify-self: end;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-right: 1.5rem;
+}
+
+.cart-card__qty-btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1;
+  color: white;
+  background-color: var(--secondary-color);
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.cart-card__qty-btn:hover,
+.cart-card__qty-btn:focus {
+  background-color: var(--tertiary-color);
+  transform: scale(1.05);
+  outline: none;
+}
+
+.cart-card__qty-value {
+  min-width: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-variant-numeric: tabular-nums;
 }
 
 .cart-card__price {

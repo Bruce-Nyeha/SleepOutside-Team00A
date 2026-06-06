@@ -40,7 +40,11 @@ function cartItemTemplate(item) {
     <h2 class="card__name">${item.Name}</h2>
   </a>
   <p class="cart-card__color">${item.Colors[0].ColorName}</p>
-  <p class="cart-card__quantity">${item.quantity}</p>
+  <div class="cart-card__quantity">
+    <button class="cart-card__qty-btn" data-id="${item.Id}" data-action="decrease" aria-label="Decrease quantity of ${item.Name}">&minus;</button>
+    <span class="cart-card__qty-value">${item.quantity}</span>
+    <button class="cart-card__qty-btn" data-id="${item.Id}" data-action="increase" aria-label="Increase quantity of ${item.Name}">+</button>
+  </div>
   <p class="cart-card__price">$${item.FinalPrice}</p>
 </li>`;
 
@@ -55,11 +59,35 @@ function removeFromCart(id) {
   updateCartCount();
 }
 
+function changeQuantity(id, delta) {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const target = cartItems.find((item) => String(item.Id) === String(id));
+  if (!target) return;
+  const newQty = target.quantity + delta;
+  let updated;
+  if (newQty <= 0) {
+    updated = cartItems.filter((item) => String(item.Id) !== String(id));
+  } else {
+    updated = cartItems.map((item) =>
+      String(item.Id) === String(id) ? { ...item, quantity: newQty } : item,
+    );
+  }
+  setLocalStorage("so-cart", updated);
+  renderCartContents();
+  updateCartCount();
+}
+
 function handleCartListClick(event) {
-  const btn = event.target.closest(".cart-card__remove");
-  if (!btn) return;
-  const id = btn.dataset.id;
-  removeFromCart(id);
+  const removeBtn = event.target.closest(".cart-card__remove");
+  if (removeBtn) {
+    removeFromCart(removeBtn.dataset.id);
+    return;
+  }
+  const qtyBtn = event.target.closest(".cart-card__qty-btn");
+  if (qtyBtn) {
+    const delta = qtyBtn.dataset.action === "increase" ? 1 : -1;
+    changeQuantity(qtyBtn.dataset.id, delta);
+  }
 }
 
 renderCartContents();
