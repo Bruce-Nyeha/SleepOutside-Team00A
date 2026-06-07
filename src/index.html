@@ -66,6 +66,29 @@
           <span>Hammocks</span>
         </a>
       </div>
+
+      <section class="newsletter">
+        <h2>Stay in the loop</h2>
+        <p>Sign up for trip tips and new gear drops.</p>
+        <form id="newsletter-form" class="newsletter__form" novalidate>
+          <label class="sr-only" for="newsletter-email">Email address</label>
+          <input
+            type="email"
+            id="newsletter-email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          />
+          <button type="submit">Subscribe</button>
+        </form>
+        <p
+          id="newsletter-message"
+          class="newsletter__message"
+          role="status"
+          aria-live="polite"
+        ></p>
+      </section>
     </main>
     <footer id="dynamic-footer"></footer>
   </body>

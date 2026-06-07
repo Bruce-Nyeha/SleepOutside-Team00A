@@ -524,3 +524,110 @@ footer {
 #comment-form button:hover {
   background-color: #555;
 }
+
+/* Visually-hidden helper for accessible labels */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Newsletter sign up */
+.newsletter {
+  margin: 2rem auto;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  max-width: 600px;
+}
+
+.newsletter h2 {
+  margin-bottom: 0.5rem;
+  color: var(--dark-grey);
+}
+
+.newsletter > p {
+  color: var(--dark-grey);
+  margin-bottom: 1rem;
+}
+
+.newsletter__form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 auto;
+}
+
+.newsletter__form input[type="email"] {
+  flex: 1 1 220px;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 4px;
+  background: white;
+  color: var(--dark-grey);
+  transition: border-color 0.2s ease;
+}
+
+.newsletter__form input[type="email"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.newsletter__form button {
+  margin: 0;
+  padding: 0.6rem 1.25rem;
+  background-color: var(--secondary-color);
+  color: white;
+  border: 0;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.newsletter__form button:hover,
+.newsletter__form button:focus {
+  background-color: var(--tertiary-color);
+  transform: scale(1.03);
+  outline: none;
+}
+
+.newsletter__message {
+  margin-top: 0.75rem;
+  min-height: 1.25em;
+  font-weight: 600;
+  opacity: 0;
+}
+
+.newsletter__message.error {
+  color: #b00020;
+}
+
+.newsletter__message.success {
+  color: #2e7d32;
+}
+
+.newsletter__message.show {
+  animation: newsletterFadeIn 0.35s ease forwards;
+}
+
+@keyframes newsletterFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
